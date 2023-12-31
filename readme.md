@@ -11,6 +11,16 @@ Welcome to FoodyLite! This is a lightweight and simplified version of the popula
 - Ingredient tracking and shopping list generation
 - Meal planning and dietary preferences
 
+## planning
+
+architecture :
+![architecture](foodyLite-architecture.png)
+
+flowchart :
+![flow](foodyLite-flowchart.png)
+
+---
+
 ## Getting Started
 
 To get started with FoodyLite, follow these steps:
