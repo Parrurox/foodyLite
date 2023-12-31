@@ -4,6 +4,7 @@ const [icons] = iconsUrl.split('?');
 // what the F was that parcel??
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import * as model from './model.js';
 
 const recipeContainer = document.querySelector('.recipe');
 
@@ -33,27 +34,12 @@ const renderSpinner = function (parentEl) {
 
 const showRecipe = async function () {
   try {
-    // 1) Loading recipe
+    const id = window.location.hash.slice(1);
+    if (!id) return;
     renderSpinner(recipeContainer);
-    const res = await fetch(
-      'https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bce0f'
-    );
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
-    // console.log(res, data);
-    let { recipe } = data.data;
-    recipe = {
-      id: recipe.id,
-      title: recipe.title,
-      publisher: recipe.publisher,
-      sourceUrl: recipe.source_url,
-      image: recipe.image_url,
-      servings: recipe.servings,
-      cookingTime: recipe.cooking_time,
-      ingredients: recipe.ingredients,
-    };
-    console.log(recipe);
+    // 1) Loading recipe
+    await model.loadRecipe(id);
+    const { recipe } = model.state;
 
     // 2) Rendering recipe
     const markup = `
@@ -160,4 +146,7 @@ const showRecipe = async function () {
     alert(err);
   }
 };
-showRecipe();
+
+// window.addEventListener('hashchange', showRecipe);
+// window.addEventListener('load', showRecipe);
+['hashchange', 'load'].forEach(ev => window.addEventListener(ev, showRecipe));
